@@ -1,11 +1,12 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UpdateCoffee = () => {
     const coffee = useLoaderData();
     const { _id, name, quantity, supplier, taste, category, details, photo } = coffee;
 
-    const handleSubmit = e =>{
+    const handleUpdate = e =>{
         e.preventDefault();
         const form = e.target;
         const name =form.name.value;
@@ -16,26 +17,26 @@ const UpdateCoffee = () => {
         const details =form.details.value;
         const photo= form.photo.value;
 
-        const newCoffee = {name,quantity, supplier, taste, category, details, photo}
-        console.log(newCoffee)
+        const updateCoffee = {name,quantity, supplier, taste, category, details, photo}
+        console.log(updateCoffee)
 
         //send data to the server
 
-        fetch('http://localhost:5000/coffee',{
-            method:'POST',
+        fetch(`http://localhost:5000/coffee/${_id}`,{
+            method:'PUT',
             headers: {
                 "content-type":"application/json"
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(updateCoffee)
         })
         .then(res=>res.json())
         .then(data=>{
             console.log(data)
-            if(data.insertedId){
+            if(data.matchedCount>0){
                 Swal.fire({
                     title: 'Success!',
                     text: 'Do you want to continue',
-                    icon: 'success',
+                    icon: 'Update',
                     confirmButtonText: 'Cool'
                   })
             }
@@ -50,7 +51,7 @@ const UpdateCoffee = () => {
             
             <div className="bg-pink-200 p-24">
         <h2 className="font-bold text-3xl">Update Coffee:{name}</h2>
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleUpdate} className="space-y-8">
           
             {/* form-row name and quantity */}
         <div className="md:flex justify-between gap-10">
@@ -118,7 +119,7 @@ const UpdateCoffee = () => {
       
       </div>
 
-      <input className="btn btn-block" type="submit" value="Add Coffee" />
+      <input className="btn btn-block" type="submit" value="Update Coffee" />
       </form>
     </div>
             
