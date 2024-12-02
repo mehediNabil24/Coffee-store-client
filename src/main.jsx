@@ -12,6 +12,7 @@ import Layout from './Components/Layout.jsx';
 import SignIn from './Components/SignIn.jsx';
 import SignUp from './Components/SignUp.jsx';
 import AuthProvider, { AuthContext } from './Components/Provider/AuthProvider.jsx';
+import Users from './Components/Users.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
   {
     path: '/signUp',
     element: <SignUp></SignUp>
+  },
+  {
+    path: '/users',
+    element: <Users></Users>,
+    loader: ()=> fetch('http://localhost:5000/users')
   }
 ]
 }
